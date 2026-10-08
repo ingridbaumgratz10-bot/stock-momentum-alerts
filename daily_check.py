@@ -348,9 +348,11 @@ def find_near_misses(universe_closes, rs_rating):
 
 
 def main():
+    # config.json es opcional: si existe y tiene credenciales de Gmail, manda el
+    # mail el mismo por SMTP (uso local/manual). Si no, solo imprime el resultado
+    # por stdout -- pensado para la rutina en la nube, que lee esta salida y
+    # manda el mail usando el conector de Gmail ya autorizado (sin contraseñas).
     cfg = load_json(CONFIG_PATH, {})
-    if not cfg:
-        raise SystemExit("Falta config.json con gmail_address, gmail_app_password, destination_email, capital_asignado")
 
     state = load_json(STATE_PATH, {
         "last_rebalanced_month": None,
@@ -484,7 +486,15 @@ def main():
 
     if actions:
         body = "\n\n".join(actions) + "\n\n-- Motor de señal Momentum+Reversion (Nasdaq-100 + S&P500) --"
-        send_email(cfg, f"[Alertas Trading] {len(actions)} accion(es) para hoy {today}", body)
+        subject = f"[Alertas Trading] {len(actions)} accion(es) para hoy {today}"
+        if cfg.get("gmail_address") and cfg.get("gmail_app_password") and cfg.get("destination_email"):
+            send_email(cfg, subject, body)
+        else:
+            print("===EMAIL_SUBJECT===")
+            print(subject)
+            print("===EMAIL_BODY===")
+            print(body)
+            print("===EMAIL_END===")
     else:
         print("Sin acciones hoy.")
 
