@@ -100,10 +100,6 @@
       "kind": "base",
       "pivot": 649.4199829101562
     },
-    "INTC": {
-      "kind": "dip",
-      "wait_days": 0
-    },
     "TER": {
       "kind": "base",
       "pivot": 449.0400085449219
@@ -137,6 +133,10 @@
     "VLO": {
       "entry_date": "2026-10-08",
       "entry_price": 419.3299865722656
+    },
+    "INTC": {
+      "entry_date": "2026-10-08",
+      "entry_price": 112.5
     }
   }
 }
