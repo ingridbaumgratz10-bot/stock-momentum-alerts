@@ -1,3 +1,6 @@
 requests
 pandas
 yfinance
+lxml
+beautifulsoup4
+html5lib

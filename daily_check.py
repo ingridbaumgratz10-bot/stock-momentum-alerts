@@ -80,8 +80,11 @@ def send_email(cfg, subject, body):
 
 def fetch_index_tickers(url, symbol_col="Symbol"):
     r = requests.get(url, headers=HEADERS, timeout=20)
-    t = pd.read_html(StringIO(r.text))[0]
-    return [s.replace(".", "-") for s in t[symbol_col].tolist()]
+    tables = pd.read_html(StringIO(r.text))
+    for t in tables:
+        if symbol_col in t.columns:
+            return [str(s).replace(".", "-") for s in t[symbol_col].tolist()]
+    raise ValueError(f"No se encontro una tabla con la columna '{symbol_col}' en {url}")
 
 
 def download_closes(tickers, start, end):
@@ -253,8 +256,8 @@ def recompute_leaders(today):
     union deduplicada top-20 c/u. Devuelve (lideres, rs_ratings, casi_califican)
     -- lo ultimo son simbolos con RS>=RS_MIN_RATING que no entraron al top-20
     pero estan a 1-2 criterios del Trend Template completo."""
-    nasdaq100 = fetch_index_tickers("https://www.slickcharts.com/nasdaq100")
-    sp500 = fetch_index_tickers("https://www.slickcharts.com/sp500")
+    nasdaq100 = fetch_index_tickers("https://en.wikipedia.org/wiki/List_of_NASDAQ-100_companies", symbol_col="Ticker")
+    sp500 = fetch_index_tickers("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies", symbol_col="Symbol")
     universe = sorted(set(nasdaq100) | set(sp500))
 
     start = (today - timedelta(days=RS_QUARTER_DAYS * 4 * 2)).strftime("%Y-%m-%d")
