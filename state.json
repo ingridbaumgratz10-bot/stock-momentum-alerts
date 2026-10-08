@@ -102,15 +102,11 @@
     },
     "INTC": {
       "kind": "dip",
-      "wait_days": 0
+      "wait_days": 1
     },
     "TER": {
       "kind": "base",
       "pivot": 449.0400085449219
-    },
-    "LRCX": {
-      "kind": "base",
-      "pivot": 347.489990234375
     },
     "MRNA": {
       "kind": "base",
@@ -120,13 +116,13 @@
       "kind": "base",
       "pivot": 588.4000244140625
     },
-    "PSX": {
-      "kind": "base",
-      "pivot": 274.2099914550781
-    },
     "TWLO": {
       "kind": "base",
       "pivot": 301.2699890136719
+    },
+    "MU": {
+      "kind": "dip",
+      "wait_days": 0
     }
   },
   "positions": {
@@ -137,6 +133,10 @@
     "VLO": {
       "entry_date": "2026-10-08",
       "entry_price": 419.3299865722656
+    },
+    "PSX": {
+      "entry_date": "2026-10-08",
+      "entry_price": 274.2099914550781
     }
   }
 }
