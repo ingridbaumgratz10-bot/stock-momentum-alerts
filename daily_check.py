@@ -10,7 +10,8 @@ Se corre una vez por dia (tarea programada en la nube). Mantiene su estado
 (lista de lideres del mes, posiciones "abiertas" presumidas) en state.json,
 versionado en este mismo repo.
 """
-import json, os, smtplib, ssl
+import html, json, os, smtplib, ssl
+from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime, timedelta
 from io import StringIO
@@ -66,8 +67,13 @@ def save_json(path, data):
         json.dump(data, f, indent=2, default=str)
 
 
-def send_email(cfg, subject, body):
-    msg = MIMEText(body, "plain", "utf-8")
+def send_email(cfg, subject, body, html_body=None):
+    if html_body:
+        msg = MIMEMultipart("alternative")
+        msg.attach(MIMEText(body, "plain", "utf-8"))
+        msg.attach(MIMEText(html_body, "html", "utf-8"))
+    else:
+        msg = MIMEText(body, "plain", "utf-8")
     msg["Subject"] = subject
     msg["From"] = cfg["gmail_address"]
     msg["To"] = cfg["destination_email"]
@@ -76,6 +82,76 @@ def send_email(cfg, subject, body):
         server.login(cfg["gmail_address"], cfg["gmail_app_password"])
         server.sendmail(cfg["gmail_address"], [cfg["destination_email"]], msg.as_string())
     print(f"Mail enviado: {subject}")
+
+
+# Clasificacion visual de cada tipo de aviso para el mail en HTML: (color de borde/icono, fondo, emoji, etiqueta)
+ACTION_STYLES = [
+    ("COMPRAR",             ("#16a34a", "#f0fdf4", "🟢", "COMPRAR AHORA")),
+    ("RUPTURA CONFIRMADA",  ("#16a34a", "#f0fdf4", "🟢", "YA DEBERIAS ESTAR ADENTRO")),
+    ("VENDER",              ("#dc2626", "#fef2f2", "🔴", "VENDER")),
+    ("BASE LISTA",          ("#2563eb", "#eff6ff", "🔵", "PREPARAR STOP-BUY")),
+    ("CAIDA DETECTADA",     ("#ea580c", "#fff7ed", "🟠", "VIGILANDO PULLBACK")),
+    ("ACTUALIZAR",          ("#ca8a04", "#fefce8", "🟡", "ACTUALIZAR ORDEN")),
+    ("CANCELAR",            ("#6b7280", "#f9fafb", "⚪", "CANCELAR ORDEN")),
+    ("Rebalanceo mensual",  ("#7c3aed", "#f5f3ff", "🔄", "REBALANCEO MENSUAL")),
+    ("CASI CALIFICAN",      ("#64748b", "#f8fafc", "👀", "CASI CALIFICAN (informativo)")),
+]
+
+
+def _classify_action(first_line):
+    for prefix, style in ACTION_STYLES:
+        if first_line.startswith(prefix):
+            return style
+    return ("#64748b", "#f8fafc", "•", "")
+
+
+def build_html_body(actions, today):
+    cards = []
+    for action in actions:
+        lines = action.split("\n")
+        first_line, rest = lines[0], lines[1:]
+        border, bg, emoji, label = _classify_action(first_line)
+        rest_html = ""
+        if rest:
+            rest_html = (
+                '<div style="margin-top:6px;font-size:13px;color:#475569;line-height:1.5;">'
+                + "<br>".join(html.escape(l) for l in rest)
+                + "</div>"
+            )
+        label_html = (
+            f'<div style="font-size:11px;font-weight:700;letter-spacing:.04em;color:{border};margin-bottom:4px;">{emoji} {label}</div>'
+            if label else ""
+        )
+        cards.append(f'''
+        <tr><td style="padding:0 0 12px 0;">
+          <div style="background:{bg};border-left:4px solid {border};border-radius:8px;padding:14px 16px;">
+            {label_html}
+            <div style="font-size:14px;color:#0f172a;line-height:1.5;">{html.escape(first_line)}</div>
+            {rest_html}
+          </div>
+        </td></tr>''')
+
+    return f'''<!doctype html>
+<html><body style="margin:0;padding:0;background:#f1f5f9;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;padding:24px 0;">
+<tr><td align="center">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:12px;overflow:hidden;">
+<tr><td style="background:#0f172a;padding:20px 24px;">
+  <div style="color:#ffffff;font-size:18px;font-weight:700;">📊 Alertas Trading</div>
+  <div style="color:#94a3b8;font-size:13px;margin-top:2px;">{today.strftime("%A %d de %B, %Y")} · {len(actions)} accion(es)</div>
+</td></tr>
+<tr><td style="padding:20px 24px 4px 24px;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+    {"".join(cards)}
+  </table>
+</td></tr>
+<tr><td style="padding:4px 24px 20px 24px;border-top:1px solid #e2e8f0;">
+  <div style="font-size:11px;color:#94a3b8;margin-top:14px;">Motor de señal Momentum+Reversion (Nasdaq-100 + S&amp;P500) · analisis automatico, no es ejecucion de ordenes real.</div>
+</td></tr>
+</table>
+</td></tr>
+</table>
+</body></html>'''
 
 
 def fetch_index_tickers(url, symbol_col="Symbol"):
@@ -489,15 +565,19 @@ def main():
 
     if actions:
         body = "\n\n".join(actions) + "\n\n-- Motor de señal Momentum+Reversion (Nasdaq-100 + S&P500) --"
+        html_body = build_html_body(actions, today)
         subject = f"[Alertas Trading] {len(actions)} accion(es) para hoy {today}"
         if cfg.get("gmail_address") and cfg.get("gmail_app_password") and cfg.get("destination_email"):
-            send_email(cfg, subject, body)
+            send_email(cfg, subject, body, html_body)
         else:
             print("===EMAIL_SUBJECT===")
             print(subject)
             print("===EMAIL_BODY===")
             print(body)
             print("===EMAIL_END===")
+            print("===EMAIL_HTML===")
+            print(html_body)
+            print("===EMAIL_HTML_END===")
     else:
         print("Sin acciones hoy.")
 
