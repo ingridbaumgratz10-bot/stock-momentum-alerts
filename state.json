@@ -114,7 +114,19 @@
     },
     "MU": {
       "kind": "dip",
-      "wait_days": 1
+      "wait_days": 2
+    },
+    "LITE": {
+      "kind": "dip",
+      "wait_days": 0
+    },
+    "BE": {
+      "kind": "dip",
+      "wait_days": 0
+    },
+    "ILMN": {
+      "kind": "dip",
+      "wait_days": 0
     }
   },
   "positions": {
