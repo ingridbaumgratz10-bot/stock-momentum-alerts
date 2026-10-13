@@ -100,10 +100,6 @@
       "kind": "base",
       "pivot": 649.4199829101562
     },
-    "TER": {
-      "kind": "base",
-      "pivot": 449.0400085449219
-    },
     "DELL": {
       "kind": "base",
       "pivot": 588.4000244140625
@@ -112,19 +108,23 @@
       "kind": "base",
       "pivot": 301.2699890136719
     },
-    "MU": {
-      "kind": "dip",
-      "wait_days": 2
-    },
     "LITE": {
       "kind": "dip",
-      "wait_days": 0
+      "wait_days": 1
     },
-    "BE": {
+    "ILMN": {
+      "kind": "dip",
+      "wait_days": 1
+    },
+    "MRVL": {
       "kind": "dip",
       "wait_days": 0
     },
-    "ILMN": {
+    "CRWD": {
+      "kind": "dip",
+      "wait_days": 0
+    },
+    "PANW": {
       "kind": "dip",
       "wait_days": 0
     }
@@ -145,6 +145,10 @@
     "MRNA": {
       "entry_date": "2026-10-09",
       "entry_price": 203.4600067138672
+    },
+    "BE": {
+      "entry_date": "2026-10-13",
+      "entry_price": 262.2799987792969
     }
   }
 }
