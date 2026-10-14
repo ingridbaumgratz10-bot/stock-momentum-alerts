@@ -100,31 +100,31 @@
       "kind": "base",
       "pivot": 649.4199829101562
     },
-    "DELL": {
-      "kind": "base",
-      "pivot": 588.4000244140625
-    },
     "TWLO": {
       "kind": "base",
       "pivot": 301.2699890136719
     },
-    "LITE": {
-      "kind": "dip",
-      "wait_days": 1
-    },
-    "ILMN": {
-      "kind": "dip",
-      "wait_days": 1
-    },
     "MRVL": {
       "kind": "dip",
-      "wait_days": 0
+      "wait_days": 1
     },
     "CRWD": {
       "kind": "dip",
-      "wait_days": 0
+      "wait_days": 1
     },
     "PANW": {
+      "kind": "dip",
+      "wait_days": 1
+    },
+    "ADI": {
+      "kind": "base",
+      "pivot": 420.54998779296875
+    },
+    "HPE": {
+      "kind": "dip",
+      "wait_days": 0
+    },
+    "P": {
       "kind": "dip",
       "wait_days": 0
     }
@@ -146,9 +146,9 @@
       "entry_date": "2026-10-09",
       "entry_price": 203.4600067138672
     },
-    "BE": {
-      "entry_date": "2026-10-13",
-      "entry_price": 262.2799987792969
+    "ILMN": {
+      "entry_date": "2026-10-14",
+      "entry_price": 271.17999267578125
     }
   }
 }
