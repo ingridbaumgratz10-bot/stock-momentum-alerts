@@ -106,42 +106,22 @@
     },
     "MRVL": {
       "kind": "dip",
-      "wait_days": 1
+      "wait_days": 2
     },
     "CRWD": {
       "kind": "dip",
-      "wait_days": 1
-    },
-    "PANW": {
-      "kind": "dip",
-      "wait_days": 1
+      "wait_days": 2
     },
     "ADI": {
       "kind": "base",
       "pivot": 420.54998779296875
     },
-    "HPE": {
-      "kind": "dip",
-      "wait_days": 0
-    },
     "P": {
       "kind": "dip",
-      "wait_days": 0
+      "wait_days": 1
     }
   },
   "positions": {
-    "MPC": {
-      "entry_date": "2026-10-08",
-      "entry_price": 433.4700012207031
-    },
-    "VLO": {
-      "entry_date": "2026-10-08",
-      "entry_price": 419.3299865722656
-    },
-    "PSX": {
-      "entry_date": "2026-10-08",
-      "entry_price": 274.2099914550781
-    },
     "MRNA": {
       "entry_date": "2026-10-09",
       "entry_price": 203.4600067138672
