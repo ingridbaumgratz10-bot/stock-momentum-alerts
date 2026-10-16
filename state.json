@@ -96,36 +96,20 @@
     }
   },
   "watching": {
-    "AMD": {
-      "kind": "base",
-      "pivot": 649.4199829101562
-    },
-    "TWLO": {
-      "kind": "base",
-      "pivot": 301.2699890136719
-    },
-    "MRVL": {
-      "kind": "dip",
-      "wait_days": 2
-    },
-    "CRWD": {
-      "kind": "dip",
-      "wait_days": 2
-    },
     "ADI": {
       "kind": "base",
       "pivot": 420.54998779296875
     },
     "P": {
       "kind": "dip",
-      "wait_days": 1
+      "wait_days": 2
+    },
+    "DDOG": {
+      "kind": "dip",
+      "wait_days": 0
     }
   },
   "positions": {
-    "MRNA": {
-      "entry_date": "2026-10-09",
-      "entry_price": 203.4600067138672
-    },
     "ILMN": {
       "entry_date": "2026-10-14",
       "entry_price": 271.17999267578125
