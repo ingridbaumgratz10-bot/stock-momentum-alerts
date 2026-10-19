@@ -100,19 +100,27 @@
       "kind": "base",
       "pivot": 420.54998779296875
     },
-    "P": {
-      "kind": "dip",
-      "wait_days": 2
-    },
-    "DDOG": {
+    "FTNT": {
       "kind": "dip",
       "wait_days": 0
+    },
+    "TWLO": {
+      "kind": "base",
+      "pivot": 301.2699890136719
     }
   },
   "positions": {
     "ILMN": {
       "entry_date": "2026-10-14",
       "entry_price": 271.17999267578125
+    },
+    "DDOG": {
+      "entry_date": "2026-10-19",
+      "entry_price": 247.11000061035156
+    },
+    "P": {
+      "entry_date": "2026-10-19",
+      "entry_price": 124.01000213623047
     }
   }
 }
