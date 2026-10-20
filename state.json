@@ -102,11 +102,15 @@
     },
     "FTNT": {
       "kind": "dip",
-      "wait_days": 0
+      "wait_days": 1
     },
     "TWLO": {
       "kind": "base",
       "pivot": 301.2699890136719
+    },
+    "VLO": {
+      "kind": "dip",
+      "wait_days": 0
     }
   },
   "positions": {
